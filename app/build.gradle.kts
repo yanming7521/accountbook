@@ -53,5 +53,22 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     // 数据库
     implementation(files("libs/lite-orm-1.8.1.jar"))
-
+    // flex布局
+    implementation("com.google.android.flexbox:flexbox:3.0.0")
+    // 自动适配
+    implementation("me.jessyan:autosize:1.2.1")
+    // 通用工具包
+    implementation("com.blankj:utilcodex:1.31.1")
+    // 图片加载
+    implementation("io.coil-kt:coil:2.5.0")
+    implementation("io.coil-kt:coil-video:2.5.0")
+    implementation("androidx.palette:palette:1.0.0")
+    // recyclerView 适配器
+    implementation("com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4")
+    // mmkv
+    implementation("com.tencent:mmkv:1.3.0")
+    // 日历组件
+    implementation("com.haibin:calendarview:3.7.1")
+    // 图表
+    implementation("com.github.PhilJay:MPAndroidChart:3.1.0")
 }
