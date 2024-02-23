@@ -9,6 +9,12 @@ plugins {
 android {
     namespace = "com.example.accountbook"
     compileSdk = 34
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.1"
+    }
 
     defaultConfig {
         applicationId = "com.example.accountbook"
@@ -51,8 +57,17 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    implementation("androidx.activity:activity-compose:1.8.2")
+    implementation("androidx.compose.ui:ui:1.6.2")
+    implementation("androidx.compose.ui:ui-tooling:1.6.2")
+    implementation("androidx.compose.foundation:foundation:1.6.2")
+    implementation("androidx.compose.material:material:1.6.2")
+    implementation("androidx.compose.material:material-icons-core:1.6.2")
+    implementation("androidx.compose.material:material-icons-extended:1.6.2")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.2")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     // 数据库
-    implementation(files("libs/lite-orm-1.8.1.jar"))
+    implementation(files("libs/lite-orm-1.8.1.ar"))
     // flex布局
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     // 自动适配
@@ -71,4 +86,10 @@ dependencies {
     implementation("com.haibin:calendarview:3.7.1")
     // 图表
     implementation("com.github.PhilJay:MPAndroidChart:3.1.0")
+    // Net
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.github.liangjingkanji:Net:3.5.1")
+    implementation("com.github.liangjingkanji:Tooltip:1.2.2")
+    // json
+    implementation("com.google.code.gson:gson:2.9.1")
 }
