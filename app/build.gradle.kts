@@ -67,7 +67,7 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.6.2")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     // 数据库
-    implementation(files("libs/lite-orm-1.8.1.ar"))
+    implementation(files("libs/lite-orm-1.8.1.jar"))
     // flex布局
     implementation("com.google.android.flexbox:flexbox:3.0.0")
     // 自动适配

@@ -16,8 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.blankj.utilcode.util.LogUtils
 import com.drake.net.utils.scopeLife
+import com.example.accountbook.common.db.DetailType
+import com.example.accountbook.common.db.ExpenseType
+import com.example.accountbook.common.db.LiteOrm
 import com.example.accountbook.ui.ViewPages
+import com.litesuits.orm.db.assit.QueryBuilder
 import kotlinx.coroutines.delay
 import java.util.Date
 
@@ -35,6 +40,18 @@ class MainActivity : ComponentActivity() {
             }
         }
         scopeLife {
+            LiteOrm.liteOrm?.query(ExpenseType::class.java)?.let {
+                it.forEach { expenseType->
+                    LogUtils.a("expenseType: $expenseType")
+                    LiteOrm.liteOrm?.query(QueryBuilder(DetailType::class.java).apply {
+                        where("type_id = ${expenseType.id}",null)
+                    })?.let { detailTypeList->
+                        detailTypeList.forEach {detailType->
+                            LogUtils.a("detailType: $detailType")
+                        }
+                    }
+                }
+            }
             while (true){
                 delay(1000)
                 message.postValue(Date())
