@@ -1,6 +1,7 @@
 package com.example.accountbook.common.db
 import com.litesuits.orm.db.annotation.*
 import com.litesuits.orm.db.enums.AssignType
+import java.util.Calendar
 
 /**
  * @author: YanMinng
@@ -54,7 +55,7 @@ data class CapitalFlow(
      * 分类ID
      */
     @Column("type_id")
-    var expenseTypeId: Long? = null,
+    var detailType: Long? = null,
     /**
      * 用途描述
      */
@@ -71,5 +72,41 @@ data class CapitalFlow(
     }
     fun delete(){
         LiteOrm.liteOrm?.delete(this)
+    }
+}
+
+/**
+ * 按照天组织流水数据
+ * @property date Long
+ * @property expenses List<CapitalFlow>
+ * @constructor
+ */
+data class CapitalFlowData(
+    val date: Long,
+    var amount:Double?=null,
+    val expenses: List<CapitalFlow>
+)
+
+data class QueryStartsAndEnd(
+    var startTimeStr :Long?=null,
+    var endTimeStr :Long?=null
+){
+    fun createStartsAndEnd(year: Int, month: Int){
+        // 准备查询日期时间戳
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, month - 1) // 月份是从0开始的，所以要减1
+        val startDate = calendar.clone() as Calendar
+        startDate.set(Calendar.DAY_OF_MONTH, 1) // 设置为指定月份的第一天
+        startDate.set(Calendar.HOUR_OF_DAY, 0)
+        startDate.set(Calendar.MINUTE, 0)
+        startDate.set(Calendar.SECOND, 0)
+        val endDate = calendar.clone() as Calendar
+        endDate.set(Calendar.DAY_OF_MONTH, endDate.getActualMaximum(Calendar.DAY_OF_MONTH))
+        endDate.set(Calendar.HOUR_OF_DAY, 23)
+        endDate.set(Calendar.MINUTE, 59)
+        endDate.set(Calendar.SECOND, 59)
+        startTimeStr = startDate.timeInMillis
+        endTimeStr = endDate.timeInMillis
     }
 }
