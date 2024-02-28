@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,14 +17,17 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.blankj.utilcode.util.GsonUtils
 import com.blankj.utilcode.util.LogUtils
 import com.drake.net.utils.scopeLife
+import com.example.accountbook.common.db.CapitalFlow
 import com.example.accountbook.common.db.DetailType
 import com.example.accountbook.common.db.ExpenseType
 import com.example.accountbook.common.db.LiteOrm
 import com.example.accountbook.ui.ViewPages
 import com.litesuits.orm.db.assit.QueryBuilder
 import kotlinx.coroutines.delay
+import java.util.Calendar
 import java.util.Date
 
 
@@ -41,18 +45,18 @@ class MainActivity : ComponentActivity() {
         }
         scopeLife {
             LiteOrm.liteOrm?.query(ExpenseType::class.java)?.let {
-                it.forEach { expenseType->
-                    LogUtils.a("expenseType: $expenseType")
+                it.forEach { expenseType ->
+//                    LogUtils.a("expenseType: $expenseType")
                     LiteOrm.liteOrm?.query(QueryBuilder(DetailType::class.java).apply {
-                        where("type_id = ${expenseType.id}",null)
-                    })?.let { detailTypeList->
-                        detailTypeList.forEach {detailType->
-                            LogUtils.a("detailType: $detailType")
+                        where("type_id = ${expenseType.id}", null)
+                    })?.let { detailTypeList ->
+                        detailTypeList.forEach { detailType ->
+//                            LogUtils.a("detailType: $detailType")
                         }
                     }
                 }
             }
-            while (true){
+            while (true) {
                 delay(1000)
                 message.postValue(Date())
             }
@@ -67,8 +71,37 @@ class MainActivity : ComponentActivity() {
             modifier = Modifier.padding(16.dp)
         ) {
             Text(text = data.toString(), style = MaterialTheme.typography.h5)
+            Button(onClick = {
+                CapitalFlow().apply {
+                    val calendar = Calendar.getInstance().apply { time = Date() }
+                    calendar.add(Calendar.DAY_OF_MONTH, -1)
+                    flowingWater = "book${Date().time}"
+                    isRecord = true
+                    recordTime = calendar.timeInMillis
+                    recordClassify = 0
+                    typeOfExpense = 2
+                    amount = 200.toDouble()
+                    detailType = 3
+                    description = "测试"
+                    userId = 1
+                    update()
+                }
+                LogUtils.a(
+                    "result: ${
+                        GsonUtils.toJson(
+                            LiteOrm.CapitalFlowQuery.queryMonthlyExpense(
+                                2024,
+                                2
+                            )
+                        )
+                    }"
+                )
+            }) {
+                Text("添加数据")
+            }
         }
     }
+
     @Preview
     @Composable
     fun ConstraintLayoutExample() {
