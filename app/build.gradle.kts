@@ -66,6 +66,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.6.2")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.2")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
     // 数据库
     implementation(files("libs/lite-orm-1.8.1.jar"))
     // flex布局
