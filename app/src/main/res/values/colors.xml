@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="boulder">#7C7C7C</color>
+    <color name="gorse">#FEEC40</color>
+    <color name="dodger_blue">#306FFF</color>
+    <color name="coral_red">#FE4040</color>
 </resources>

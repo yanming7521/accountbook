@@ -1,6 +1,5 @@
 package com.example.accountbook.ui
 
-import android.graphics.Color
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -10,14 +9,13 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.accountbook.R
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.drake.net.utils.scope
 
 /**
  * @author: YanMinng
@@ -30,11 +28,17 @@ object ViewPageData {
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun ViewPages() {
     val pagerState = rememberPagerState(initialPage = ViewPageData.pagerIndex.intValue) {
         ViewPageData.pagerCount.intValue
+    }
+    scope {
+        pagerState.scrollToPage(ViewPageData.pagerIndex.intValue)
+    }
+    LaunchedEffect(pagerState.currentPage) {
+        ViewPageData.pagerIndex.intValue = pagerState.currentPage
     }
     HorizontalPager(pagerState) { page ->
         Box(
@@ -42,13 +46,24 @@ fun ViewPages() {
                 .fillMaxHeight(),
             contentAlignment = Alignment.Center,
         ) {
-            Text(
-                text = page.toString(),
-                style = MaterialTheme.typography.h5,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
+            when (page) {
+                0 -> Index()
+                1 -> DataAnalysis()
+                2 -> Account()
+                3 -> MinePage()
+                else -> PageContent(page)
+            }
         }
     }
+}
+
+@Composable
+fun PageContent(page: Int) {
+    // 这里可以自定义每一页的内容，例如：
+    Text(
+        text = "Page $page",
+        style = MaterialTheme.typography.h5,
+        textAlign = TextAlign.Center,
+        modifier = Modifier.fillMaxWidth()
+    )
 }

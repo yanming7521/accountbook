@@ -78,6 +78,7 @@ dependencies {
     // 图片加载
     implementation("io.coil-kt:coil:2.5.0")
     implementation("io.coil-kt:coil-video:2.5.0")
+    implementation("io.coil-kt:coil-compose:2.5.0")
     implementation("androidx.palette:palette:1.0.0")
     // recyclerView 适配器
     implementation("com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4")

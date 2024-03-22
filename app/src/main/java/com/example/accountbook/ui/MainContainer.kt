@@ -1,20 +1,29 @@
 package com.example.accountbook.ui
 
-import android.view.Window
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import coil.compose.rememberAsyncImagePainter
 import com.example.accountbook.R
 import java.util.Date
 
@@ -26,7 +35,6 @@ import java.util.Date
 
 object MainContainerData {
     val message = mutableStateOf(Date())
-    var window: Window? = null
 }
 
 @Preview(showBackground = true)
@@ -43,54 +51,61 @@ fun MainContainer() {
         }
         val (bottomBar) = createRefs()
         Box(modifier = Modifier
-            .background(colorResource(R.color.black))
             .constrainAs(bottomBar) { bottom.linkTo(parent.bottom) }
             .fillMaxWidth()
             .height(60.dp)
         ) {
-            UpdatingDataDemo()
+            TabBar()
         }
     }
 }
 
-@Preview
-@Composable
-fun UpdatingDataDemo() {
-    Text(
-        text = MainContainerData.message.value.toString(),
-        color = colorResource(R.color.white),
-        modifier = Modifier.padding(16.dp)
-
-    )
+object TabBarData {
+    var itemList: MutableList<String> = arrayListOf()
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-fun ConstraintLayoutExample() {
-    ConstraintLayout(
-        modifier = Modifier.padding(16.dp)
+fun TabBar(
+) {
+    TabBarData.itemList = mutableListOf(
+        stringResource(R.string.tab_1),
+        stringResource(R.string.tab_2),
+        stringResource(R.string.tab_3),
+        stringResource(R.string.tab_4),
+    )
+    Row(
+        horizontalArrangement = Arrangement.SpaceAround,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
     ) {
-        // 定义第一个文本元素在顶部的约束
-        val (topText) = createRefs()
-        Text(
-            text = "顶部文本",
-            modifier = Modifier.constrainAs(topText) {
-                top.linkTo(parent.top, margin = 16.dp)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
+        TabBarData.itemList.forEachIndexed { index, s ->
+            Column(modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f)
+                .background(
+                    if (ViewPageData.pagerIndex.intValue == index) {
+                        MaterialTheme.colors.primary
+                    } else {
+                        MaterialTheme.colors.background
+                    }
+                )
+                .clickable {
+                    ViewPageData.pagerIndex.intValue = index
+                }) {
+                Image(
+                    painter = rememberAsyncImagePainter(R.drawable.ic_launcher_foreground),
+                    contentDescription = s,
+                    modifier = Modifier
+                        .width(33.dp)
+                        .height(33.dp)
+                        .padding(top = 4.dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+                Text(text = s, modifier = Modifier.align(Alignment.CenterHorizontally))
             }
-        )
-
-        // 定义第二个文本元素在第一个文本元素的下方，并水平居中
-        val (bottomText) = createRefs()
-        Text(
-            text = "底部文本",
-            modifier = Modifier.constrainAs(bottomText) {
-                top.linkTo(topText.bottom, margin = 16.dp)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            }
-        )
+        }
     }
 }
 
