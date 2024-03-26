@@ -40,23 +40,26 @@ object MainContainerData {
 @Preview(showBackground = true)
 @Composable
 fun MainContainer() {
-    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-        val (viewPages) = createRefs()
-        Box(modifier = Modifier
-            .constrainAs(viewPages) { top.linkTo(parent.top) }
-            .fillMaxWidth()
-            .padding(bottom = 60.dp)
-        ) {
-            ViewPages()
+    MyAppTheme{
+        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+            val (viewPages) = createRefs()
+            Box(modifier = Modifier
+                .constrainAs(viewPages) { top.linkTo(parent.top) }
+                .fillMaxWidth()
+                .padding(bottom = 60.dp)
+            ) {
+                ViewPages()
+            }
+            val (bottomBar) = createRefs()
+            Box(modifier = Modifier
+                .constrainAs(bottomBar) { bottom.linkTo(parent.bottom) }
+                .fillMaxWidth()
+                .height(60.dp)
+            ) {
+                TabBar()
+            }
         }
-        val (bottomBar) = createRefs()
-        Box(modifier = Modifier
-            .constrainAs(bottomBar) { bottom.linkTo(parent.bottom) }
-            .fillMaxWidth()
-            .height(60.dp)
-        ) {
-            TabBar()
-        }
+        LoginDialog()
     }
 }
 

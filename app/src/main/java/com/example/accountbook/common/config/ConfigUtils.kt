@@ -2,7 +2,8 @@ package com.example.accountbook.common.config
 
 import android.content.Context
 import android.os.Parcelable
-import androidx.lifecycle.MutableLiveData
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.blankj.utilcode.util.GsonUtils
 import com.google.gson.reflect.TypeToken
 import com.tencent.mmkv.MMKV
@@ -36,25 +37,27 @@ object ConfigUtils {
     fun getString(key: String, defValue: String): String =
         MMKV.defaultMMKV().decodeString(key, defValue) ?: defValue
 
-    fun putInt(key: String, value: Int): Boolean = MMKV.defaultMMKV().encode(key, value)
+    private fun putInt(key: String, value: Int): Boolean = MMKV.defaultMMKV().encode(key, value)
 
     fun getInt(key: String, defValue: Int): Int = MMKV.defaultMMKV().decodeInt(key, defValue)
 
-    fun putLong(key: String, value: Long): Boolean = MMKV.defaultMMKV().encode(key, value)
+    private fun putLong(key: String, value: Long): Boolean = MMKV.defaultMMKV().encode(key, value)
 
     fun getLong(key: String, defValue: Long): Long = MMKV.defaultMMKV().decodeLong(key, defValue)
 
-    fun putDouble(key: String, value: Double): Boolean = MMKV.defaultMMKV().encode(key, value)
+    private fun putDouble(key: String, value: Double): Boolean =
+        MMKV.defaultMMKV().encode(key, value)
 
     fun getDouble(key: String, defValue: Double): Double =
         MMKV.defaultMMKV().decodeDouble(key, defValue)
 
-    fun putFloat(key: String, value: Float): Boolean = MMKV.defaultMMKV().encode(key, value)
+    private fun putFloat(key: String, value: Float): Boolean = MMKV.defaultMMKV().encode(key, value)
 
     fun getFloat(key: String, defValue: Float): Float =
         MMKV.defaultMMKV().decodeFloat(key, defValue)
 
-    fun putBoolean(key: String, value: Boolean): Boolean = MMKV.defaultMMKV().encode(key, value)
+    private fun putBoolean(key: String, value: Boolean): Boolean =
+        MMKV.defaultMMKV().encode(key, value)
 
     fun getBoolean(key: String, defValue: Boolean): Boolean =
         MMKV.defaultMMKV().decodeBool(key, defValue)
@@ -72,31 +75,36 @@ object ConfigUtils {
 }
 
 abstract class ConfigItem<T>(private var key: String, private var defaultVal: T) {
+    /**
+     * 获取配置
+     */
     abstract var config: T
     open fun resetToDefault() {
         ConfigUtils.removeValueForKey(key)
-        liveData.postValue(config)
+        mutableStateData.value = config
     }
 
-    var liveData: MutableLiveData<T> = MutableLiveData()
+    /**
+     * 配置数据
+     */
+    val mutableStateData = mutableStateOf(defaultVal)
         get() {
             if (field.value == null) {
-                field.postValue(config)
+                field.value = config
             }
             return field
         }
 }
 
-data class StringConfig(
-    private var key: String, private var defaultVal: String
-) : ConfigItem<String>(key, defaultVal) {
+data class StringConfig(private var key: String, private var defaultVal: String) :
+    ConfigItem<String>(key, defaultVal) {
     override var config: String
         get() {
             return ConfigUtils.getString(key, defaultVal)
         }
-        set(_value) {
-            ConfigUtils.putString(key, _value)
-            liveData.postValue(_value)
+        set(mValue) {
+            ConfigUtils.put(key, mValue)
+            mutableStateData.value = mValue
         }
 
     override fun toString(): String {
@@ -104,16 +112,15 @@ data class StringConfig(
     }
 }
 
-data class BooleanConfig(
-    var key: String, var defaultVal: Boolean
-) : ConfigItem<Boolean>(key, defaultVal) {
+data class BooleanConfig(var key: String, var defaultVal: Boolean) :
+    ConfigItem<Boolean>(key, defaultVal) {
     override var config: Boolean
         get() {
             return ConfigUtils.getBoolean(key, defaultVal)
         }
-        set(_value) {
-            ConfigUtils.putBoolean(key, _value)
-            liveData.postValue(_value)
+        set(mValue) {
+            ConfigUtils.put(key, mValue)
+            mutableStateData.value = mValue
         }
 
     override fun toString(): String {
@@ -121,16 +128,15 @@ data class BooleanConfig(
     }
 }
 
-data class IntConfig(
-    var key: String, var defaultVal: Int
-) : ConfigItem<Int>(key, defaultVal) {
+data class IntConfig(var key: String, var defaultVal: Int) :
+    ConfigItem<Int>(key, defaultVal) {
     override var config: Int
         get() {
             return ConfigUtils.getInt(key, defaultVal)
         }
-        set(_value) {
-            ConfigUtils.putInt(key, _value)
-            liveData.postValue(_value)
+        set(mValue) {
+            ConfigUtils.put(key, mValue)
+            mutableStateData.value = mValue
         }
 
     override fun toString(): String {
@@ -138,17 +144,15 @@ data class IntConfig(
     }
 }
 
-
-data class LongConfig(
-    var key: String, var defaultVal: Long
-) : ConfigItem<Long>(key, defaultVal) {
+data class LongConfig(var key: String, var defaultVal: Long) :
+    ConfigItem<Long>(key, defaultVal) {
     override var config: Long
         get() {
             return ConfigUtils.getLong(key, defaultVal)
         }
-        set(_value) {
-            ConfigUtils.putLong(key, _value)
-            liveData.postValue(_value)
+        set(mValue) {
+            ConfigUtils.put(key, mValue)
+            mutableStateData.value = mValue
         }
 
     override fun toString(): String {
@@ -156,16 +160,15 @@ data class LongConfig(
     }
 }
 
-data class DoubleConfig(
-    var key: String, var defaultVal: Double
-) : ConfigItem<Double>(key, defaultVal) {
+data class DoubleConfig(var key: String, var defaultVal: Double) :
+    ConfigItem<Double>(key, defaultVal) {
     override var config: Double
         get() {
             return ConfigUtils.getDouble(key, defaultVal)
         }
-        set(_value) {
-            ConfigUtils.putDouble(key, _value)
-            liveData.postValue(_value)
+        set(mValue) {
+            ConfigUtils.put(key, mValue)
+            mutableStateData.value = mValue
         }
 
     override fun toString(): String {
@@ -173,16 +176,15 @@ data class DoubleConfig(
     }
 }
 
-data class FloatConfig(
-    var key: String, var defaultVal: Float
-) : ConfigItem<Float>(key, defaultVal) {
+data class FloatConfig(var key: String, var defaultVal: Float) :
+    ConfigItem<Float>(key, defaultVal) {
     override var config: Float
         get() {
             return ConfigUtils.getFloat(key, defaultVal)
         }
-        set(_value) {
-            ConfigUtils.putFloat(key, _value)
-            liveData.postValue(_value)
+        set(mValue) {
+            ConfigUtils.put(key, mValue)
+            mutableStateData.value = mValue
         }
 
 
@@ -191,17 +193,15 @@ data class FloatConfig(
     }
 }
 
-
-data class FloatListConfig(
-    var key: String, var defaultValue: MutableList<Float>
-) : ConfigItem<MutableList<Float>>(key, defaultValue) {
+data class FloatListConfig(var key: String, var defaultValue: MutableList<Float>) :
+    ConfigItem<MutableList<Float>>(key, defaultValue) {
     override var config: MutableList<Float>
         get() {
             return getFloatList(key, defaultValue)
         }
-        set(_value) {
-            putFloatList(key, _value)
-            liveData.postValue(_value)
+        set(mValue) {
+            putFloatList(key, mValue)
+            mutableStateData.value = mValue
         }
 
 
@@ -225,9 +225,9 @@ data class MapConfig(var key: String, var defaultValue: MutableMap<Int, Int>) :
     ConfigItem<MutableMap<Int, Int>>(key, defaultValue) {
     override var config: MutableMap<Int, Int>
         get() = getMap(key, defaultValue)
-        set(_value) {
-            setMap(key, _value)
-            liveData.postValue(_value)
+        set(mValue) {
+            setMap(key, mValue)
+            mutableStateData.value = mValue
         }
 
     private fun setMap(key: String, value: MutableMap<Int, Int>): Boolean {
@@ -243,5 +243,15 @@ data class MapConfig(var key: String, var defaultValue: MutableMap<Int, Int>) :
             e.printStackTrace()
         }
         return defaultVal
+    }
+}
+
+data class DialogConfig(val dialogKey: MutableState<Boolean> = mutableStateOf(false)) {
+    fun showDialog() {
+        dialogKey.value = true
+    }
+
+    fun dismissDialog() {
+        dialogKey.value = false
     }
 }

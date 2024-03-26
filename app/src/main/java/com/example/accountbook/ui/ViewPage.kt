@@ -11,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -25,6 +26,7 @@ import com.drake.net.utils.scope
 object ViewPageData {
     val pagerCount = mutableIntStateOf(4)
     val pagerIndex = mutableIntStateOf(0)
+    val string = mutableStateOf("1313")
 }
 
 @OptIn(ExperimentalFoundationApi::class)
