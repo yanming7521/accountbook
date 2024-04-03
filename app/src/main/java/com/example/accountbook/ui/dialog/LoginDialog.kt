@@ -1,4 +1,4 @@
-package com.example.accountbook.ui
+package com.example.accountbook.ui.dialog
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
@@ -12,8 +12,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
@@ -24,6 +24,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.example.accountbook.common.config.Config
+import com.example.accountbook.common.config.DialogConfig
+import com.example.accountbook.ui.MyAppTheme
 
 /**
  * @author: YanMinng
@@ -41,12 +43,12 @@ object LoginDialogData {
 @SuppressLint("UnrememberedMutableState")
 @Preview(showBackground = true)
 @Composable
-fun LoginDialog() {
+fun LoginDialog(dialogConfig: DialogConfig = DialogConfig(Config.CatchUser.isLogin.mutableStateData)) {
     MyAppTheme {
-        if (Config.CatchUser.isLogin.mutableStateData.value) {
+        if (dialogConfig.isShowDialog()) {
             return@MyAppTheme
         }
-        Dialog(onDismissRequest = {}) {
+        Dialog(onDismissRequest = { dialogConfig.dismissDialog() }) {
             Card(
                 modifier = Modifier
                     .clip(RoundedCornerShape(8.dp))
@@ -55,13 +57,13 @@ fun LoginDialog() {
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(20.33.dp)
                         .verticalScroll(rememberScrollState())
                         .fillMaxSize()
                 ) {
                     Text(text = "登录", style = MaterialTheme.typography.h6)
-                    TextField(
-                        modifier = Modifier.padding(top = 16.dp),
+                    OutlinedTextField(
+                        modifier = Modifier.padding(16.dp),
                         value = LoginDialogData.account.value,
                         onValueChange = {
                             LoginDialogData.account.value = it
@@ -71,8 +73,8 @@ fun LoginDialog() {
                         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                         keyboardActions = KeyboardActions(onDone = { /* doSomething() */ }),
                     )
-                    TextField(
-                        modifier = Modifier.padding(top = 16.dp),
+                    OutlinedTextField(
+                        modifier = Modifier.padding(16.dp),
                         value = LoginDialogData.password.value,
                         onValueChange = {
                             LoginDialogData.password.value = it

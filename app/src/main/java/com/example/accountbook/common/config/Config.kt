@@ -1,5 +1,6 @@
 package com.example.accountbook.common.config
 
+import androidx.compose.runtime.mutableStateOf
 import com.example.accountbook.common.db.CatchUserConfig
 import com.example.accountbook.common.db.User
 
@@ -35,6 +36,7 @@ object Config {
     }
 
     object Dialog {
-        val themeDialog = DialogConfig()
+        val themeDialog = DialogConfig(mutableStateOf(true))
+        val addDialog = DialogConfig(mutableStateOf(false))
     }
 }

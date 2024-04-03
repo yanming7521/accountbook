@@ -15,7 +15,14 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
-
+    signingConfigs {
+        create("book") {
+            storeFile = file("D:\\Android项目和工具\\book.jks")
+            keyAlias = "book"
+            storePassword = "123123159"
+            keyPassword = "123123159"
+        }
+    }
     defaultConfig {
         applicationId = "com.example.accountbook"
         minSdk = 24
@@ -37,6 +44,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("book")
         }
     }
     compileOptions {
@@ -54,6 +62,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.constraintlayout)
+    implementation(libs.androidx.material3.android)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
