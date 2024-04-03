@@ -37,13 +37,13 @@ object MyAppThemeData {
 // 定义亮色主题
 private val LightColorPalette = lightColors(
     primary = Color.Green,
-    secondary =Color.Green
+    secondary = Color.Green
 )
 
 // 定义暗色主题
 private val DarkColorPalette = darkColors(
     primary = Color(0xFF03DAC5),
-    secondary = Color(0xFF03DAC5)
+    secondary = Color(0xFF03DAC5),
 )
 
 fun getThemePalette(theme: Int = Config.Theme.MyAppTheme.mutableStateData.value): Colors {

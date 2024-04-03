@@ -254,4 +254,8 @@ data class DialogConfig(val dialogKey: MutableState<Boolean> = mutableStateOf(fa
     fun dismissDialog() {
         dialogKey.value = false
     }
+
+    fun isShowDialog(): Boolean {
+        return dialogKey.value
+    }
 }
