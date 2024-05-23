@@ -22,6 +22,7 @@ import java.util.Date
  * qwqeqe
  * wqww
  * dev提交
+ * 我是主分支的更新123
  */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
