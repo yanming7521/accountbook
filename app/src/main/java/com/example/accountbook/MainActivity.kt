@@ -21,9 +21,6 @@ import java.util.Date
  * @author: YanMinng
  * 1
  * 2
- * 3
- * 4
- * 5
  */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
