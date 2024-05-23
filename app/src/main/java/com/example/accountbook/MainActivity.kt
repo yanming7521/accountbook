@@ -24,8 +24,6 @@ import java.util.Date
  * 3
  * 4
  * 5
- * qwqeqe
- * wqww
  */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
