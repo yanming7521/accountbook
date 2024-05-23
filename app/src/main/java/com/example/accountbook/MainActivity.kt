@@ -17,6 +17,10 @@ import kotlinx.coroutines.delay
 import java.util.Date
 
 
+/**
+ * @author: YanMinng
+ */
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
