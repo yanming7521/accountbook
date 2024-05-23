@@ -16,7 +16,10 @@ import com.litesuits.orm.db.assit.QueryBuilder
 import kotlinx.coroutines.delay
 import java.util.Date
 
-
+/**
+ * 超过主分支
+ * @author: YanMinng
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
